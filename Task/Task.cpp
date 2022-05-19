@@ -11,7 +11,7 @@ void shiftToLeft(std::vector<VectorInt1D>& multiplicativeGroup, int row)
 
 VectorInt1D divideByIrreduciblePolynomial(const VectorInt1D& polynomial, 
 	                                      const VectorInt1D& irreduciblePolymonial,
-	                                      int numeralSystem)
+	                                      int degree)
 {
 	int quotient = polynomial[0] / irreduciblePolymonial[0];
 	VectorInt1D newPolynomial(polynomial.size());
@@ -22,7 +22,7 @@ VectorInt1D divideByIrreduciblePolynomial(const VectorInt1D& polynomial,
 		else 
 		{
 			newPolynomial[i] = polynomial[i] - irreduciblePolymonial[i] * quotient;
-			while (newPolynomial[i] < 0) newPolynomial[i] += numeralSystem;
+			while (newPolynomial[i] < 0) newPolynomial[i] += degree;
 		}
 	return newPolynomial;
 }
@@ -56,34 +56,34 @@ void outputPolymonial(const VectorInt1D& polynomial)
 
 int main()
 {
-	int numeralSystem = 0, degree = 0;
+	int degree = 0, numeralSystem = 0;
 
-	std::cout << "Input a numeral system of a polynomial ";
-	std::cin >> numeralSystem;
 	std::cout << "Input a degree of a polynomial ";
 	std::cin >> degree;
+	std::cout << "Input a numeral system of a polynomial ";
+	std::cin >> numeralSystem;
 
-	VectorInt1D irreduciblePolymonial(degree + 1);
+	VectorInt1D irreduciblePolymonial(numeralSystem + 1);
 	std::cout << "Input the coefficients of the irreducible polynomial ";
 	for (int i = 0; i < static_cast<int>(irreduciblePolymonial.size()); i++)
 		std::cin >> irreduciblePolymonial[i];
 
 	std::vector<VectorInt1D> multiplicativeGroup(pow(degree, numeralSystem) - 1,
-		                                         VectorInt1D(degree + 1));
+		                                         VectorInt1D(numeralSystem + 1));
 
-	multiplicativeGroup[0][degree] = 1;
+	multiplicativeGroup[0][numeralSystem] = 1;
 	std::cout << 1 << ") ";
 	outputPolymonial(multiplicativeGroup[0]);
 
 	bool isIrreducible = true;
 	int i = 1;
-	while ((i < static_cast<int>(pow(numeralSystem, degree) - 1)) && (isIrreducible))
+	while ((i < static_cast<int>(pow(degree, numeralSystem) - 1)) && (isIrreducible))
 	{
 		shiftToLeft(multiplicativeGroup, i);
 		if (multiplicativeGroup[i][0] != 0)
 			multiplicativeGroup[i] = divideByIrreduciblePolynomial(multiplicativeGroup[i],
 				                                                   irreduciblePolymonial,
-				                                                   numeralSystem);
+				                                                   degree);
 		
 		if (isTheSame(multiplicativeGroup, i - 1))
 		{
