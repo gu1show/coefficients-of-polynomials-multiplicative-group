@@ -87,7 +87,7 @@ int main()
 		
 		if (isTheSame(multiplicativeGroup, i - 1))
 		{
-			std::cout << "Stop! Irreducible polynomial is not irreducible!";
+			std::cout << "Stop! The polynomial is not irreducible!";
 			isIrreducible = false;
 		}
 		else 
